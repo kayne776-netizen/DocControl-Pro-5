@@ -14,6 +14,7 @@ function App() {
     const newItems = files.map((file, index) => ({
       id: Date.now() + index,
       name: file.name,
+      url: URL.createObjectURL(file),
     }));
 
     sectionSetter([...currentSection, ...newItems]);
@@ -21,6 +22,12 @@ function App() {
   };
 
   const handleDelete = (id, sectionSetter, currentSection) => {
+    const itemToDelete = currentSection.find((item) => item.id === id);
+
+    if (itemToDelete && itemToDelete.url) {
+      URL.revokeObjectURL(itemToDelete.url);
+    }
+
     const updatedItems = currentSection.filter((item) => item.id !== id);
     sectionSetter(updatedItems);
   };
@@ -75,23 +82,43 @@ function App() {
                   padding: "10px 12px",
                   borderRadius: "8px",
                   marginBottom: "10px",
+                  gap: "10px",
+                  flexWrap: "wrap",
                 }}
               >
-                <span>{item.name}</span>
+                <span style={{ flex: 1 }}>{item.name}</span>
 
-                <button
-                  onClick={() => handleDelete(item.id, setItems, items)}
-                  style={{
-                    background: "#dc2626",
-                    color: "white",
-                    border: "none",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Delete
-                </button>
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      background: "#16a34a",
+                      color: "white",
+                      textDecoration: "none",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      display: "inline-block",
+                    }}
+                  >
+                    Open
+                  </a>
+
+                  <button
+                    onClick={() => handleDelete(item.id, setItems, items)}
+                    style={{
+                      background: "#dc2626",
+                      color: "white",
+                      border: "none",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
