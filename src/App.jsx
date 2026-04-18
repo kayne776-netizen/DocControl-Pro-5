@@ -118,12 +118,13 @@ function App() {
     <div style={styles.app}>
       <aside style={styles.sidebar}>
         <div>
-         <div style={styles.logoBox}>
-  <div style={styles.logoCircle}>DCP</div>
+        <div style={styles.logoBox}>
+  <img src={logo} alt="DocControl Pro Logo" style={styles.logoImage} />
   <div>
     <h2 style={styles.logoTitle}>DocControl Pro</h2>
     <p style={styles.logoSub}>Project Intelligence Hub</p>
   </div>
+
 </div>
           <div style={styles.sidebarMenu}>
             <button
