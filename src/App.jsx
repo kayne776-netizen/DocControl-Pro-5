@@ -1,118 +1,97 @@
-function StatCard({ label, value, hint }) {
-  return (
-    <div className="card stat-card">
-      <div className="stat-value">{value}</div>
-      <div className="stat-label">{label}</div>
-      <div className="stat-hint">{hint}</div>
-    </div>
-  )
-}
+import { useState } from "react"
 
-function Panel({ title, children }) {
+function App() {
+  const [page, setPage] = useState("home")
+  const [documents, setDocuments] = useState([])
+  const [projects, setProjects] = useState([])
+  const [input, setInput] = useState("")
+
+  const addDocument = () => {
+    if (input.trim() === "") return
+    setDocuments([...documents, input])
+    setInput("")
+  }
+
+  const addProject = () => {
+    if (input.trim() === "") return
+    setProjects([...projects, input])
+    setInput("")
+  }
+
   return (
-    <section className="card panel">
-      <div className="panel-header">
-        <h2>{title}</h2>
+    <div style={{ padding: "20px" }}>
+      <h1>DocControl Pro</h1>
+
+      {/* Navigation */}
+      <div style={{ marginBottom: "20px" }}>
+        <button onClick={() => setPage("home")}>Home</button>{" "}
+        <button onClick={() => setPage("documents")}>Documents</button>{" "}
+        <button onClick={() => setPage("projects")}>Projects</button>{" "}
+        <button onClick={() => setPage("knowledge")}>Knowledge Base</button>
       </div>
-      {children}
-    </section>
-  )
-}
 
-export default function App() {
-  const recentDocs = [
-    { number: 'P-101-DS-001', title: 'Pump Datasheet', rev: 'Rev 3', status: 'Pending Review' },
-    { number: 'M-220-GA-014', title: 'General Arrangement', rev: 'Rev 1', status: 'Approved' },
-    { number: 'E-450-SL-008', title: 'Single Line Diagram', rev: 'Rev 2', status: 'Returned With Comments' },
-  ]
-
-  const knowledgeItems = [
-    'Transmittal numbering rules',
-    'Vendor document review workflow',
-    'Typical revision status meanings',
-    'Lessons learned from previous project packages',
-  ]
-
-  const actions = [
-    'Review vendor package for Project Falcon',
-    'Follow up on overdue instrument datasheets',
-    'Confirm latest approved P&ID revision',
-    'Upload meeting notes and tag open actions',
-  ]
-
-  return (
-    <div className="app-shell">
-      <header className="hero">
+      {/* HOME */}
+      {page === "home" && (
         <div>
-          <p className="eyebrow">DocControl Pro</p>
-          <h1>Document control + project knowledge in one place</h1>
-          <p className="hero-copy">
-            A starter dashboard for tracking revisions, approvals, overdue items, and searchable project know-how.
+          <h2>Welcome</h2>
+          <p>Select a section to begin.</p>
+        </div>
+      )}
+
+      {/* DOCUMENTS */}
+      {page === "documents" && (
+        <div>
+          <h2>Documents</h2>
+
+          <input
+            type="text"
+            placeholder="Enter document name"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button onClick={addDocument}>Add Document</button>
+
+          <ul>
+            {documents.map((doc, index) => (
+              <li key={index}>{doc}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* PROJECTS */}
+      {page === "projects" && (
+        <div>
+          <h2>Projects</h2>
+
+          <input
+            type="text"
+            placeholder="Enter project name"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button onClick={addProject}>Add Project</button>
+
+          <ul>
+            {projects.map((proj, index) => (
+              <li key={index}>{proj}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* KNOWLEDGE BASE */}
+      {page === "knowledge" && (
+        <div>
+          <h2>Knowledge Base</h2>
+          <p>
+            This section will store procedures, lessons learned, and document
+            control standards.
           </p>
         </div>
-        <div className="hero-actions">
-          <button>Upload Documents</button>
-          <button className="secondary">Search Knowledge Base</button>
-        </div>
-      </header>
-
-      <main className="content-grid">
-        <section className="stats-grid">
-          <StatCard label="Open Documents" value="128" hint="12 need action today" />
-          <StatCard label="Pending Approvals" value="24" hint="4 overdue" />
-          <StatCard label="Recent Uploads" value="19" hint="Last 7 days" />
-          <StatCard label="Knowledge Articles" value="42" hint="Procedures, tips, lessons learned" />
-        </section>
-
-        <div className="two-column">
-          <Panel title="Recent Documents">
-            <div className="table-like">
-              <div className="table-head row">
-                <span>Document No.</span>
-                <span>Title</span>
-                <span>Revision</span>
-                <span>Status</span>
-              </div>
-              {recentDocs.map((doc) => (
-                <div className="row" key={doc.number}>
-                  <span>{doc.number}</span>
-                  <span>{doc.title}</span>
-                  <span>{doc.rev}</span>
-                  <span>{doc.status}</span>
-                </div>
-              ))}
-            </div>
-          </Panel>
-
-          <Panel title="Quick Actions">
-            <ul className="simple-list">
-              {actions.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Panel>
-        </div>
-
-        <div className="two-column">
-          <Panel title="Knowledge Base Shortcuts">
-            <ul className="simple-list">
-              {knowledgeItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Panel>
-
-          <Panel title="How this starter is organized">
-            <ul className="simple-list">
-              <li>Proper Vite React structure with a <strong>src</strong> folder</li>
-              <li><strong>main.jsx</strong> renders the app</li>
-              <li><strong>App.jsx</strong> contains the dashboard UI</li>
-              <li><strong>styles.css</strong> contains all styling</li>
-              <li>Ready for GitHub upload and Vercel deployment</li>
-            </ul>
-          </Panel>
-        </div>
-      </main>
+      )}
     </div>
   )
 }
+
+export default App
