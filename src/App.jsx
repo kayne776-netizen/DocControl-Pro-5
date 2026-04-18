@@ -1,3 +1,4 @@
+import logo from "./assets/logo.png";
 import { useMemo, useState } from "react";
 
 function App() {
